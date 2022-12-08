@@ -20,7 +20,7 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["pods"]
-    verbs: ["get", "watch", "list"]
+    verbs: ["get"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -43,6 +43,7 @@ roleRef:
 - `ISTIO_ENDPOINT`: Name of the istio proxy pod endpoint, defaults to `127.0.0.1:15020`
 - `K8S_SELF_NAME`: Name of the container this image runs as, defaults to `istio-proxy-quit`
 - `K8S_NAMESPACE`: Namespace of this pod, pass in via [downward api](https://kubernetes.io/docs/concepts/workloads/pods/downward-api/)
+- `K8S_POD_NAME`: Name of the pod, pass in via [downward api](https://kubernetes.io/docs/concepts/workloads/pods/downward-api/)
 - `SLEEP_INTERVAL`: Interval of the polling, passed to bash `sleep` command, defaults to `5s`.
 - `API_SERVER`: Url of kubernetes api server, defaults to `https://kubernetes.default.svc`.
 - `SERVICE_ACCOUNT`: Service account mount path, defaults to `/var/run/secrets/kubernetes.io/serviceaccount`
@@ -75,6 +76,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
         - name: pi
           image: perl:5.34.0
           command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]

@@ -1,5 +1,6 @@
 #!/bin/sh
 
+
 ISTIO_PROXY_NAME=${ISTIO_PROXY_NAME:-"istio-proxy"}
 ISTIO_ENDPOINT=${ISTIO_ENDPOINT:-"127.0.0.1:15020"}
 K8S_SELF_NAME=${K8S_SELF_NAME:="istio-proxy-quit"}
@@ -10,7 +11,7 @@ TOKEN=$(cat ${SERVICE_ACCOUNT}/token)
 CACERT=${SERVICE_ACCOUNT}/ca.crt
 
 function getDetails(){
-    local result=$( curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET "${API_SERVER}/api/v1/namespaces/${K8S_NAMESPACE}/pods" )
+    local result=$( curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET "${API_SERVER}/api/v1/namespaces/${K8S_NAMESPACE}/pods/${K8S_POD_NAME}" )
     echo $result
 }
 
