@@ -1,7 +1,7 @@
 FROM alpine:3.17.0
 
-RUN addgroup -S proxyquit --gid 1337 && \
-    adduser -S --gid 1337 --uid 1337 proxyquit && \
+RUN addgroup -S proxyquit -g 1337 && \
+    adduser -S -g 1337 -u 1337 proxyquit && \
     apk add curl jq
 
 WORKDIR /app
